@@ -91,7 +91,16 @@ export class AwsLogDriver extends LogDriver {
         retention: this.props.logRetention || Infinity,
     });
 
-    // Don't need this if you've statically granted the permissions ahead of time
+    /**
+     * Note: We are commenting this out to remove the need for the iam:PutRolePolicy on the CDK
+     * deploy user which is sufficient for our uses, as we've statically granted the permission to
+     * the appropriate resource ahead of time, so we can limit the excessive permissions granted to
+     * the user.
+     *
+     * TODO: Before PRing this change back to the official CDK repo we need to make this an optional
+     * change instead to support both use cases, as the pre-existing dynamic grantWrite is intended
+     * for the use case described in this PR https://github.com/aws/aws-cdk/pull/1291
+     */
     // this.logGroup.grantWrite(containerDefinition.taskDefinition.obtainExecutionRole());
 
     return {
