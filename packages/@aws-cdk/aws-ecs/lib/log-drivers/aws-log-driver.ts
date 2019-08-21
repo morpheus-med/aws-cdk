@@ -91,7 +91,8 @@ export class AwsLogDriver extends LogDriver {
         retention: this.props.logRetention || Infinity,
     });
 
-    this.logGroup.grantWrite(containerDefinition.taskDefinition.obtainExecutionRole());
+    // Don't need this if you've statically granted the permissions ahead of time
+    // this.logGroup.grantWrite(containerDefinition.taskDefinition.obtainExecutionRole());
 
     return {
       logDriver: 'awslogs',
