@@ -92,7 +92,7 @@ export class AwsLogDriver extends LogDriver {
         retention: this.props.logRetention || Infinity,
     });
 
-    this.logGroup.grantWrite(containerDefinition.taskDefinition.obtainExecutionRole());
+    // this.logGroup.grantWrite(containerDefinition.taskDefinition.obtainExecutionRole());
 
     return {
       logDriver: 'awslogs',

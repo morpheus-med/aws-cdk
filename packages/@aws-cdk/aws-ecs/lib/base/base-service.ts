@@ -514,6 +514,7 @@ export abstract class BaseService extends Resource
       namespace: sdNamespace,
       name: options.name,
       dnsRecordType: dnsRecordType!,
+      routingPolicy: options.routingPolicy,
       customHealthCheck: { failureThreshold: options.failureThreshold || 1 }
     });
 
@@ -710,6 +711,13 @@ export interface CloudMapOptions {
    * NOTE: This is used for HealthCheckCustomConfig
    */
   readonly failureThreshold?: number,
+
+  /**
+   * The Routing Policy to use
+   *
+   * @default MULTIVALUE
+   */
+  readonly routingPolicy?: cloudmap.RoutingPolicy;
 }
 
 /**

@@ -15,18 +15,23 @@ export class EcrImage extends ContainerImage {
    * 012345678910.dkr.ecr.<region-name>.amazonaws.com/<repository-name>@sha256:94afd1f2e64d908bc90dbca0035a5b567EXAMPLE.
    */
   public readonly imageName: string;
+  private noGrant: boolean | undefined;
 
   /**
    * Constructs a new instance of the EcrImage class.
    */
-  constructor(private readonly repository: ecr.IRepository, private readonly tag: string) {
+  constructor(private readonly repository: ecr.IRepository, private readonly tag: string, noGrant?: boolean) {
     super();
 
+    this.noGrant = noGrant;
     this.imageName = this.repository.repositoryUriForTag(this.tag);
   }
 
   public bind(_scope: Construct, containerDefinition: ContainerDefinition): ContainerImageConfig {
     this.repository.grantPull(containerDefinition.taskDefinition.obtainExecutionRole());
+    if (!this.noGrant) {
+      this.repository.grantPull(containerDefinition.taskDefinition.obtainExecutionRole());
+    }
 
     return {
       imageName: this.imageName
